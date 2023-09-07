@@ -6,4 +6,10 @@ defmodule StandaloneAppWeb.PageController do
     # so skip the default app layout.
     render(conn, :home, layout: false)
   end
+
+  def show(conn, %{"slug" => slug}) do
+    conn
+    |> assign(:slug, slug)
+    |> render(:show, layout: false)
+  end
 end

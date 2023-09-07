@@ -10,6 +10,8 @@ import Config
 config :standalone_app,
   ecto_repos: [StandaloneApp.Repo]
 
+config :standalone_app, :blogs, StandaloneApp.Blog
+
 # Configures the endpoint
 config :standalone_app, StandaloneAppWeb.Endpoint,
   url: [host: "localhost"],
