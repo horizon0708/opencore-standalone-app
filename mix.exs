@@ -2,6 +2,18 @@ defmodule StandaloneApp.MixProject do
   use Mix.Project
 
   def project do
+    umbrella_deps =
+      if System.get_env("IN_UMBRELLA") == "true" do
+        [
+          build_path: "../../_build",
+          config_path: "../../config/config.exs",
+          deps_path: "../../deps",
+          lockfile: "../../mix.lock"
+        ]
+      else
+        []
+      end
+
     [
       app: :standalone_app,
       version: "0.1.0",
@@ -11,6 +23,7 @@ defmodule StandaloneApp.MixProject do
       aliases: aliases(),
       deps: deps()
     ]
+    |> Keyword.merge(umbrella_deps)
   end
 
   # Configuration for the OTP application.
@@ -31,6 +44,15 @@ defmodule StandaloneApp.MixProject do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
+    umbrella_deps =
+      if System.get_env("IN_UMBRELLA") == "true" do
+        [
+          {:core, in_umbrella: true}
+        ]
+      else
+        []
+      end
+
     [
       {:phoenix, "~> 1.7.7"},
       {:phoenix_ecto, "~> 4.4"},
@@ -51,6 +73,7 @@ defmodule StandaloneApp.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"}
     ]
+    |> Kernel.++(umbrella_deps)
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
